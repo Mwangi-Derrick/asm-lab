@@ -1,2 +1,11 @@
-*.exe
+# Ignore compiled binaries
 *.obj
+*.exe
+*.o
+
+# Ignore Rust compilation artifacts if you drop a cargo project inside
+/into-the-metal/rust/target/
+
+# System specific files
+.DS_Store
+Thumbs.db
