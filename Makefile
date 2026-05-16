@@ -7,7 +7,7 @@ ASM_FLAGS=-f win64
 CC_FLAGS=-O3
 
 # Build Targets
-all: basics simd
+all: basics simd into-metal-asm
 
 basics: from-the-metal/01-basics/exit.asm
 	$(ASM) $(ASM_FLAGS) from-the-metal/01-basics/exit.asm -o from-the-metal/01-basics/exit.obj
@@ -17,5 +17,17 @@ simd: from-the-metal/03-simd-vectors/simd_add.asm from-the-metal/03-simd-vectors
 	$(ASM) $(ASM_FLAGS) from-the-metal/03-simd-vectors/simd_add.asm -o from-the-metal/03-simd-vectors/simd_add.obj
 	$(CC) $(CC_FLAGS) from-the-metal/03-simd-vectors/main.c from-the-metal/03-simd-vectors/simd_add.obj -o from-the-metal/03-simd-vectors/simd_add.exe
 
+# Pipeline A: Emitting Assembly from High-Level Languages
+into-metal-asm: go-asm rust-asm c-asm
+
+go-asm: into-the-metal/go/stack.go
+	go build -gcflags="-S" into-the-metal/go/stack.go 2> into-the-metal/go/stack.s
+
+rust-asm: into-the-metal/rust/bounds.rs
+	rustc --emit asm -C opt-level=3 into-the-metal/rust/bounds.rs -o into-the-metal/rust/bounds.s
+
+c-asm: into-the-metal/c-cpp/square.c
+	$(CC) -S -O3 -mavx2 -masm=intel into-the-metal/c-cpp/square.c -o into-the-metal/c-cpp/square.s
+
 clean:
-	del /s *.obj *.exe
+	del /s *.obj *.exe *.s
