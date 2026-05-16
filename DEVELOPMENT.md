@@ -15,8 +15,15 @@ To reproduce the results in this lab, you need the following tools installed and
 
 ## 🏗️ Build Pipelines
 
+The easiest way to build and generate assembly for all languages is using the root `Makefile`:
+
+```bash
+# Build all targets (basics, SIMD, and Go/Rust/C ASM emission)
+make
+```
+
 ### 1. Hand-Written Assembly (Pipeline B)
-To compile a hand-written `.asm` file and link it with a C runner:
+To manually compile a `.asm` file and link it with a C runner:
 
 ```powershell
 # 1. Assemble the .asm into a Windows x64 object file
@@ -24,13 +31,18 @@ To compile a hand-written `.asm` file and link it with a C runner:
 
 # 2. Compile the C runner and link the object file
 gcc path/to/main.c path/to/file.obj -o path/to/output.exe
-
-# 3. Execute
-.\path\to\output.exe
 ```
 
 ### 2. High-Level to Assembly (Pipeline A)
-To inspect how compilers translate your code:
+You can use individual `make` targets to generate assembly files for specific experiments:
+
+```bash
+make go-asm    # Generates into-the-metal/go/stack.s
+make rust-asm  # Generates into-the-metal/rust/bounds.s
+make c-asm     # Generates into-the-metal/c-cpp/square.s
+```
+
+Or manually:
 
 **GCC (Intel Syntax):**
 ```powershell
@@ -39,12 +51,12 @@ gcc -S -O3 -mavx2 -masm=intel input.c -o output.s
 
 **Go (Plan9 Syntax):**
 ```powershell
-go tool compile -S input.go > output.s
+go build -gcflags="-S" input.go 2> output.s
 ```
 
 **Rust:**
 ```powershell
-rustc --emit asm -C opt-level=3 --target x86_64-pc-windows-gnu input.rs
+rustc --emit asm -C opt-level=3 input.rs -o output.s
 ```
 
 ## 🧪 Verification Checklists
