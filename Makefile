@@ -1,7 +1,7 @@
 # Makefile for Windows x64 Assembly Lab
 
 # Compilers and Assemblers
-ASM=nasm
+ASM="C:/Program Files/NASM/nasm.exe"
 CC=gcc
 ASM_FLAGS=-f win64
 CC_FLAGS=-O3

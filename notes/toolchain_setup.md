@@ -3,7 +3,8 @@
 ## NASM (Assembler)
 ```bash
 # Windows x64 object file
-nasm -f win64 <file>.asm -o <file>.obj
+# Absolute path found at: C:\Program Files\NASM\nasm.exe
+"C:/Program Files/NASM/nasm.exe" -f win64 <file>.asm -o <file>.obj
 ```
 
 ## GCC (Linker/Compiler)
