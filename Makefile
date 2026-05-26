@@ -30,8 +30,9 @@ go-asm: into-the-metal/go/stack.go
 rust-asm: into-the-metal/rust/bounds.rs
 	rustc --emit asm -C opt-level=3 into-the-metal/rust/bounds.rs -o into-the-metal/rust/bounds.s
 
-c-asm: into-the-metal/c-cpp/square.c
+c-asm: into-the-metal/c-cpp/square.c into-the-metal/c-cpp/add.c
 	$(CC) -S -O3 -mavx2 -masm=intel into-the-metal/c-cpp/square.c -o into-the-metal/c-cpp/square.s
+	$(CC) -S -O3 -mavx2 -masm=intel into-the-metal/c-cpp/add.c -o into-the-metal/c-cpp/add.asm
 
 clean:
 	del /s *.obj *.exe *.s
