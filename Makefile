@@ -7,7 +7,7 @@ ASM_FLAGS=-f win64
 CC_FLAGS=-O3
 
 # Build Targets
-all: basics simd into-metal-asm
+all: basics conv simd into-metal-asm
 
 basics: from-the-metal/01-basics/exit.asm from-the-metal/01-basics/hello.asm from-the-metal/01-basics/math.asm
 	$(ASM) $(ASM_FLAGS) from-the-metal/01-basics/exit.asm -o from-the-metal/01-basics/exit.obj
@@ -16,6 +16,10 @@ basics: from-the-metal/01-basics/exit.asm from-the-metal/01-basics/hello.asm fro
 	$(CC) from-the-metal/01-basics/hello.obj -o from-the-metal/01-basics/hello.exe
 	$(ASM) $(ASM_FLAGS) from-the-metal/01-basics/math.asm -o from-the-metal/01-basics/math.obj
 	$(CC) from-the-metal/01-basics/math.obj -o from-the-metal/01-basics/math.exe
+
+conv: from-the-metal/02-calling-conv/complex_math.asm from-the-metal/02-calling-conv/main.c
+	$(ASM) $(ASM_FLAGS) from-the-metal/02-calling-conv/complex_math.asm -o from-the-metal/02-calling-conv/complex_math.obj
+	$(CC) $(CC_FLAGS) from-the-metal/02-calling-conv/main.c from-the-metal/02-calling-conv/complex_math.obj -o from-the-metal/02-calling-conv/conv.exe
 
 simd: from-the-metal/03-simd-vectors/simd_add.asm from-the-metal/03-simd-vectors/main.c
 	$(ASM) $(ASM_FLAGS) from-the-metal/03-simd-vectors/simd_add.asm -o from-the-metal/03-simd-vectors/simd_add.obj
